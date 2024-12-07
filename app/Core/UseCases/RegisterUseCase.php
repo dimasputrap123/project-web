@@ -4,6 +4,7 @@ namespace App\Core\UseCases;
 
 use App\Core\Entities\User;
 use App\Core\Interfaces\IUserRepository;
+use App\Http\Request\RegisterRequest;
 
 class RegisterUseCase
 {
@@ -14,13 +15,9 @@ class RegisterUseCase
         $this->userRepository = $userRepository;
     }
 
-    public function execute(User $user): bool
+    public function execute(RegisterRequest $registerRequest): bool
     {
-        $is_exists_byid = $this->userRepository->findById($user->id);
-        if ($is_exists_byid != null) {
-            return false;
-        }
-
+        $user = new User(0, $registerRequest->name, $registerRequest->email, $registerRequest->password);
         $is_exists_byemail = $this->userRepository->findByEmail($user->email);
         if ($is_exists_byemail != null) {
             return false;

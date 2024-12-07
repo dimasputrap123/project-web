@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Core\Entities\User;
 use App\Core\UseCases\LoginUseCase;
 use App\Core\UseCases\RegisterUseCase;
 use App\Http\Controllers\Controller;
@@ -26,8 +25,7 @@ class AuthController extends Controller
     {
         try {
             $register_request = RegisterRequest::fromArray($request->all());
-            $user = new User(0, $register_request->name, $register_request->email, $register_request->password);
-            $result = $this->registerUseCase->execute($user);
+            $result = $this->registerUseCase->execute($register_request);
             if (!$result) {
                 return response()->json(['status' => false, 'message' => 'user sudah ada']);
             }
