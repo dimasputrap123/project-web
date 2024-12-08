@@ -35,7 +35,7 @@ class AuthController extends Controller
         }
     }
 
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         try {
             $login_request = LoginRequest::fromArray($request->all());
