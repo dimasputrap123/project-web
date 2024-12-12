@@ -6,10 +6,13 @@ use App\Core\Entities\Survey;
 
 interface ISurveyRepository
 {
-    public function findOneOnly(int $id): ?Survey;
+    public function isExistByIdSurvey(int $id): bool;
     /**
      * @return Survey[]
      */
-    public function findByIdSurver(int $id): array;
-    public function save(): int;
+    public function findByIdSurvey(int $id): array;
+    /**
+     * @var Survey[]
+     */
+    public function save(array $surveys);
 }

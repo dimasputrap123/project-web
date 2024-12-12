@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\UseCases\TambahSurveyUseCase;
 use App\Http\Request\TambahSurveyRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class AsesmenController extends Controller
 {
+    private TambahSurveyUseCase $tambahSurveyUseCase;
+
+    public function __construct(TambahSurveyUseCase $tambahSurveyUseCase)
+    {
+        $this->tambahSurveyUseCase = $tambahSurveyUseCase;
+    }
+
     function add_master_bantuan(Request $request)
     {
         // untuk menambah jenis master bantuan
@@ -22,16 +29,12 @@ class AsesmenController extends Controller
     function tambahSurvey(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'data' => 'required|json',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(['status' => false, 'data' => $validator->errors()]);
-            }
-            return response()->json(['status' => true, 'data' => json_decode($request->data)]);
+            $tambahsurvey_request = TambahSurveyRequest::fromArray($request->all());
+            $user = $request->user();
+            $this->tambahSurveyUseCase->execute($tambahsurvey_request, $user->id);
+            return response()->json(['status' => true, 'data' => json_decode($tambahsurvey_request->surveys)]);
         } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
         }
     }
 }
