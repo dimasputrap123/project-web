@@ -57,10 +57,18 @@ class AsesmenController extends Controller
             return response()->json($validator->errors());
         }
 
-        $master_kategori = MasterKategori::create([
-            'id' => $request->id,
-            'kategori' => $request->kategori,
-        ]);
+        try {
+            $master_kategori = MasterKategori::create([
+                'id' => $request->id,
+                'kategori' => $request->kategori,
+            ]);
+            if ($master_kategori == null) {
+                throw new Exception("failed create");
+            }
+            return response()->json(['status' => true, 'message' => 'success']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
     }
 
     function add_master_asesmen(Request $request)
@@ -75,11 +83,19 @@ class AsesmenController extends Controller
             return response()->json($validator->errors());
         }
 
-        $master_asesmen = MasterAsesmen::create([
-            'id' => $request->id,
-            'pertanyaan' => $request->pertanyaan,
-            'status' => $request->status,
-        ]);
+        try {
+            $master_asesmen = MasterAsesmen::create([
+                'id' => $request->id,
+                'pertanyaan' => $request->pertanyaan,
+                'status' => $request->status,
+            ]);
+            if ($master_asesmen == null) {
+                throw new Exception("failed create");
+            }
+            return response()->json(['status' => true, 'message' => 'success']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
     }
 
     function add_kpm(Request $request)
@@ -95,13 +111,13 @@ class AsesmenController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-
-        $kpm = Kpm::create([
-            'id' => $request->id,
-            'nik' => $request->nik,
-            'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'status' => $request->status,
+        try {
+            $kpm = Kpm::create([
+                'id' => $request->id,
+                'nik' => $request->nik,
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'status' => $request->status,
         ]);
     }
 
