@@ -118,7 +118,15 @@ class AsesmenController extends Controller
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'status' => $request->status,
-        ]);
+            ]);
+            if ($kpm == null) {
+                throw new Exception("failed create");
+            } else {
+                return response()->json(['status' => true, 'message' => 'success']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
     }
 
     function tambahSurvey(Request $request)
