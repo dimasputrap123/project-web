@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/bantuan', [AsesmenController::class, 'add_master_bantuan']);
+Route::middleware('auth:sanctum')->post('/kategori', [AsesmenController::class, 'add_master_kategori']);
+Route::middleware('auth:sanctum')->post('/asesmen', [AsesmenController::class, 'add_master_asesmen']);
+Route::middleware('auth:sanctum')->post('/kpm', [AsesmenController::class, 'add_kpm']);
 
 Route::middleware('auth:sanctum')->post('/tambahSurvey', [AsesmenController::class, 'tambahSurvey']);
 
