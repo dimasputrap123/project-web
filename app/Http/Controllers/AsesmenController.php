@@ -8,6 +8,7 @@ use App\Infrastructure\Models\Kpm;
 use App\Infrastructure\Models\MasterAsesmen;
 use App\Infrastructure\Models\MasterBantuan;
 use App\Infrastructure\Models\MasterKategori;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,14 +32,22 @@ class AsesmenController extends Controller
             return response()->json($validator->errors());
         }
 
-        $master_bantuan = MasterBantuan::create([
-            'id' => $request->id,
-            'bantuan' => $request->bantuan,
-        ]);
-
+        try {
+            $master_bantuan = MasterBantuan::create([
+                'id' => $request->id,
+                'bantuan' => $request->bantuan,
+            ]);
+            if ($master_bantuan == null) {
+                throw new Exception("failed create");
+            }
+            return response()->json(['status' => true, 'message' => 'success']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
     }
 
-    function add_master_kategori(Request $request) {
+    function add_master_kategori(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:30',
             'kategori' => 'required|string|max:255|',
@@ -52,10 +61,10 @@ class AsesmenController extends Controller
             'id' => $request->id,
             'kategori' => $request->kategori,
         ]);
-
     }
 
-    function add_master_asesmen(Request $request) {
+    function add_master_asesmen(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:30',
             'pertanyaan' => 'required|string|max:255',
@@ -71,10 +80,10 @@ class AsesmenController extends Controller
             'pertanyaan' => $request->pertanyaan,
             'status' => $request->status,
         ]);
-
     }
 
-    function add_kpm(Request $request) {
+    function add_kpm(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'id' => 'required|string|max:30',
             'nik' => 'required|string|max:255',
@@ -94,7 +103,6 @@ class AsesmenController extends Controller
             'alamat' => $request->alamat,
             'status' => $request->status,
         ]);
-
     }
 
     function tambahSurvey(Request $request)
