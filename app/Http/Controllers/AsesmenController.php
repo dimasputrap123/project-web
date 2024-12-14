@@ -100,8 +100,8 @@ class AsesmenController extends Controller
 
     function add_kpm(Request $request)
     {
+        $user = $request->user();
         $validator = Validator::make($request->all(), [
-            'id' => 'required|string|max:30',
             'nik' => 'required|string|max:255',
             'nama' => 'required|string|max:255|',
             'alamat' => 'required|string|max:255|',
@@ -113,11 +113,11 @@ class AsesmenController extends Controller
         }
         try {
             $kpm = Kpm::create([
-                'id' => $request->id,
                 'nik' => $request->nik,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'status' => $request->status,
+                'updated_by' => $user->id,
             ]);
             if ($kpm == null) {
                 throw new Exception("failed create");
