@@ -26,5 +26,6 @@ Artisan::command('tes', function () {
     chdir($scriptDir);
     $command = "$pythonPath $scriptPath '$arguments'";
     $output = shell_exec($command);
-    var_dump($output);
+    $tes = json_decode($output);
+    var_dump($tes);
 });

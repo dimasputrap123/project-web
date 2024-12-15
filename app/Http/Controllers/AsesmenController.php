@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Core\UseCases\TambahSurveyUseCase;
+use App\Http\Request\PrediksiRequest;
 use App\Http\Request\TambahSurveyRequest;
 use App\Infrastructure\Models\Kpm;
 use App\Infrastructure\Models\MasterAsesmen;
@@ -137,7 +138,13 @@ class AsesmenController extends Controller
         }
     }
 
-    function prediksiHasil(Request $request) {
-        
+    function prediksiHasil(Request $request)
+    {
+        try {
+            $prediksi_request = PrediksiRequest::fromArray($request->all());
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }
