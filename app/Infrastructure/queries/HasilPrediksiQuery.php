@@ -2,10 +2,13 @@
 
 namespace App\Infrastructure\queries;
 
+use App\Core\DTO\PertanyaanItemDTO;
 use App\Core\DTO\PertanyaanSlugDTO;
 use App\Core\DTO\PrediksiDTO;
 use App\Core\Interfaces\IHasilPrediksiQuery;
 use App\Http\Request\PrediksiRequest;
+use App\Infrastructure\Models\MasterAsesmen;
+use Exception;
 
 class HasilPrediksiQuery implements IHasilPrediksiQuery
 {
@@ -29,6 +32,16 @@ class HasilPrediksiQuery implements IHasilPrediksiQuery
 
     public function getPertanyaanSlug(PrediksiRequest $request): PertanyaanSlugDTO
     {
-        return new PertanyaanSlugDTO([]);
+        $surveys = json_decode($request->surveys);
+        $surveys_slugs = [];
+        foreach ($surveys as $item) {
+            $slug = MasterAsesmen::where('id', $item->id_pertanyaan)->first();
+            if ($slug == null) {
+                throw new Exception("id pertanyaan not found");
+            }
+            $tmp = new PertanyaanItemDTO($slug->pertanyaan_slug, $item->jawaban);
+            $surveys_slugs[] = $tmp;
+        }
+        return new PertanyaanSlugDTO($surveys_slugs);
     }
 }

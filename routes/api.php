@@ -18,13 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/bantuan', [AsesmenController::class, 'add_master_bantuan']);
-Route::middleware('auth:sanctum')->post('/kategori', [AsesmenController::class, 'add_master_kategori']);
-Route::middleware('auth:sanctum')->post('/asesmen', [AsesmenController::class, 'add_master_asesmen']);
-Route::middleware('auth:sanctum')->post('/kpm', [AsesmenController::class, 'add_kpm']);
-
-Route::middleware('auth:sanctum')->post('/tambahSurvey', [AsesmenController::class, 'tambahSurvey']);
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/bantuan', [AsesmenController::class, 'add_master_bantuan']);
+    Route::post('/kategori', [AsesmenController::class, 'add_master_kategori']);
+    Route::post('/asesmen', [AsesmenController::class, 'add_master_asesmen']);
+    Route::post('/kpm', [AsesmenController::class, 'add_kpm']);
+    Route::post('/tambahSurvey', [AsesmenController::class, 'tambahSurvey']);
+    Route::post('/prediksi', [AsesmenController::class, 'prediksiHasil']);
 });

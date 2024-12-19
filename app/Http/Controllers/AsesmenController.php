@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Interfaces\IHasilPrediksiQuery;
 use App\Core\UseCases\TambahSurveyUseCase;
 use App\Http\Request\PrediksiRequest;
 use App\Http\Request\TambahSurveyRequest;
@@ -16,10 +17,12 @@ use Illuminate\Support\Facades\Validator;
 class AsesmenController extends Controller
 {
     private TambahSurveyUseCase $tambahSurveyUseCase;
+    private IHasilPrediksiQuery $prediksiQuery;
 
-    public function __construct(TambahSurveyUseCase $tambahSurveyUseCase)
+    public function __construct(TambahSurveyUseCase $tambahSurveyUseCase, IHasilPrediksiQuery $prediksiQuery)
     {
         $this->tambahSurveyUseCase = $tambahSurveyUseCase;
+        $this->prediksiQuery = $prediksiQuery;
     }
 
     function add_master_bantuan(Request $request)
@@ -142,9 +145,11 @@ class AsesmenController extends Controller
     {
         try {
             $prediksi_request = PrediksiRequest::fromArray($request->all());
-            
+            $pertanyaan_slug = $this->prediksiQuery->getPertanyaanSlug($prediksi_request);
+            $prediksi = $this->prediksiQuery->prediksi($pertanyaan_slug->pertanyaan_json);
+            return response()->json(['status' => true, 'message' => 'success', 'data' => $prediksi]);
         } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
         }
     }
 }

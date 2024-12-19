@@ -40,7 +40,9 @@ class AuthController extends Controller
         try {
             $login_request = LoginRequest::fromArray($request->all());
             $token = $this->loginUseCase->execute($login_request);
-            return response()->json(['status' => true, 'message' => 'success', 'data' => $token]);
+            $user = $request->user();
+            $user->token = $token;
+            return response()->json(['status' => true, 'message' => 'success', 'data' => $user]);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => $th->getMessage()], 400);
         }
