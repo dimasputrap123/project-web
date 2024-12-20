@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Core\DTO\ProfileDTO;
 use App\Core\UseCases\LoginUseCase;
 use App\Core\UseCases\RegisterUseCase;
 use App\Http\Controllers\Controller;
@@ -40,11 +41,16 @@ class AuthController extends Controller
         try {
             $login_request = LoginRequest::fromArray($request->all());
             $token = $this->loginUseCase->execute($login_request);
-            $user = $request->user();
-            $user->token = $token;
-            return response()->json(['status' => true, 'message' => 'success', 'data' => $user]);
+            return response()->json(['status' => true, 'message' => 'success', 'data' => ['token' => $token]]);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => $th->getMessage()], 400);
         }
+    }
+
+    public function profile(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $profile = new ProfileDTO($user);
+        return response()->json(['status' => true, 'message' => 'success', 'data' => $profile]);
     }
 }

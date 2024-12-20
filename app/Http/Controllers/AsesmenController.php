@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Interfaces\IDashboardQuery;
 use App\Core\Interfaces\IHasilPrediksiQuery;
 use App\Core\UseCases\TambahSurveyUseCase;
 use App\Http\Request\PrediksiRequest;
@@ -18,11 +19,16 @@ class AsesmenController extends Controller
 {
     private TambahSurveyUseCase $tambahSurveyUseCase;
     private IHasilPrediksiQuery $prediksiQuery;
+    private IDashboardQuery $dashboardQuery;
 
-    public function __construct(TambahSurveyUseCase $tambahSurveyUseCase, IHasilPrediksiQuery $prediksiQuery)
-    {
+    public function __construct(
+        TambahSurveyUseCase $tambahSurveyUseCase,
+        IHasilPrediksiQuery $prediksiQuery,
+        IDashboardQuery $dashboardQuery
+    ) {
         $this->tambahSurveyUseCase = $tambahSurveyUseCase;
         $this->prediksiQuery = $prediksiQuery;
+        $this->dashboardQuery = $dashboardQuery;
     }
 
     function add_master_bantuan(Request $request)
@@ -150,6 +156,24 @@ class AsesmenController extends Controller
             return response()->json(['status' => true, 'message' => 'success', 'data' => $prediksi]);
         } catch (\Throwable $th) {
             return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
+
+    function dashboard()
+    {
+        try {
+            $result = $this->dashboardQuery->getRekapDashboard();
+            return response()->json(['status' => true, 'message' => 'success', 'data' => $result]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
+
+    function daftarKpmBelumAsesmen(Request $request) {
+        try {
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }

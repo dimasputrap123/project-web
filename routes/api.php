@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\AsesmenController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,10 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/bantuan', [AsesmenController::class, 'add_master_bantuan']);
     Route::post('/kategori', [AsesmenController::class, 'add_master_kategori']);
     Route::post('/asesmen', [AsesmenController::class, 'add_master_asesmen']);
     Route::post('/kpm', [AsesmenController::class, 'add_kpm']);
     Route::post('/tambahSurvey', [AsesmenController::class, 'tambahSurvey']);
     Route::post('/prediksi', [AsesmenController::class, 'prediksiHasil']);
+    Route::post('/rekap', [AsesmenController::class, 'dashboard']);
 });
