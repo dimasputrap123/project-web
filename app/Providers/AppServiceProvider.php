@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Core\Interfaces\IDaftarKpmQuery;
 use App\Core\Interfaces\IDashboardQuery;
 use App\Core\Interfaces\IHasilPrediksiQuery;
 use App\Core\Interfaces\IHasilSurveyRepository;
 use App\Core\Interfaces\ISurveyRepository;
 use App\Core\Interfaces\IUserRepository;
+use App\Infrastructure\queries\DaftarKpmQuery;
 use App\Infrastructure\queries\DashboardQuery;
 use App\Infrastructure\queries\HasilPrediksiQuery;
 use App\Infrastructure\repositories\HasilSurveyRepository;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IHasilSurveyRepository::class, HasilSurveyRepository::class);
         $this->app->bind(IHasilPrediksiQuery::class, HasilPrediksiQuery::class);
         $this->app->bind(IDashboardQuery::class, DashboardQuery::class);
+        $this->app->bind(IDaftarKpmQuery::class,DaftarKpmQuery::class);
     }
 
     /**

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Interfaces\IDaftarKpmQuery;
 use App\Core\Interfaces\IDashboardQuery;
 use App\Core\Interfaces\IHasilPrediksiQuery;
 use App\Core\UseCases\TambahSurveyUseCase;
+use App\Http\Request\ListRequest;
 use App\Http\Request\PrediksiRequest;
 use App\Http\Request\TambahSurveyRequest;
 use App\Infrastructure\Models\Kpm;
@@ -20,15 +22,18 @@ class AsesmenController extends Controller
     private TambahSurveyUseCase $tambahSurveyUseCase;
     private IHasilPrediksiQuery $prediksiQuery;
     private IDashboardQuery $dashboardQuery;
+    private IDaftarKpmQuery $daftarKpmQuery;
 
     public function __construct(
         TambahSurveyUseCase $tambahSurveyUseCase,
         IHasilPrediksiQuery $prediksiQuery,
-        IDashboardQuery $dashboardQuery
+        IDashboardQuery $dashboardQuery,
+        IDaftarKpmQuery $daftarKpmQuery
     ) {
         $this->tambahSurveyUseCase = $tambahSurveyUseCase;
         $this->prediksiQuery = $prediksiQuery;
         $this->dashboardQuery = $dashboardQuery;
+        $this->daftarKpmQuery = $daftarKpmQuery;
     }
 
     function add_master_bantuan(Request $request)
@@ -169,11 +174,51 @@ class AsesmenController extends Controller
         }
     }
 
-    function daftarKpmBelumAsesmen(Request $request) {
+    function daftarKpmBelumAsesmen(Request $request)
+    {
         try {
-            //code...
+            $listRequest = ListRequest::fromArray($request->all());
+            $result = $this->daftarKpmQuery->getBelumAsesmen($listRequest);
+            return response()->json(['status' => true, 'message' => 'success', 'data' => $result]);
         } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
         }
+    }
+
+    function daftarKpmSudahAsesmen(Request $request)
+    {
+        try {
+            $listRequest = ListRequest::fromArray($request->all());
+            $result = $this->daftarKpmQuery->getSudahAsesmen($listRequest);
+            return response()->json(['status' => true, 'message' => 'success', 'data' => $result]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
+
+    function daftarKpmTidakDitemukan(Request $request)
+    {
+        try {
+            $listRequest = ListRequest::fromArray($request->all());
+            $result = $this->daftarKpmQuery->getTidakDitemukan($listRequest);
+            return response()->json(['status' => true, 'message' => 'success', 'data' => $result]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
+
+    function daftarKpmMeninggal(Request $request)
+    {
+        try {
+            $listRequest = ListRequest::fromArray($request->all());
+            $result = $this->daftarKpmQuery->getMeninggal($listRequest);
+            return response()->json(['status' => true, 'message' => 'success', 'data' => $result]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
+        }
+    }
+
+    function updateStatusKpm() {
+        
     }
 }

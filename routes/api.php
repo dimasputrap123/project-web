@@ -26,4 +26,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/tambahSurvey', [AsesmenController::class, 'tambahSurvey']);
     Route::post('/prediksi', [AsesmenController::class, 'prediksiHasil']);
     Route::post('/rekap', [AsesmenController::class, 'dashboard']);
+    Route::post('/kpm-blm-asesmen', [AsesmenController::class, 'daftarKpmBelumAsesmen']);
+    Route::post('/kpm-sudah-asesmen', [AsesmenController::class, 'daftarKpmSudahAsesmen']);
+    Route::post('/kpm-tidak-ditemukan', [AsesmenController::class, 'daftarKpmTidakDitemukan']);
+    Route::post('/kpm-meninggal', [AsesmenController::class, 'daftarKpmMeninggal']);
 });
