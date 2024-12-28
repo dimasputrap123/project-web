@@ -6,9 +6,11 @@ use App\Core\Interfaces\IDaftarKpmQuery;
 use App\Core\Interfaces\IDashboardQuery;
 use App\Core\Interfaces\IHasilPrediksiQuery;
 use App\Core\UseCases\TambahSurveyUseCase;
+use App\Core\UseCases\UpdateStatusKpmUseCase;
 use App\Http\Request\ListRequest;
 use App\Http\Request\PrediksiRequest;
 use App\Http\Request\TambahSurveyRequest;
+use App\Http\Request\UpdateKpmRequest;
 use App\Infrastructure\Models\Kpm;
 use App\Infrastructure\Models\MasterAsesmen;
 use App\Infrastructure\Models\MasterBantuan;
@@ -23,17 +25,20 @@ class AsesmenController extends Controller
     private IHasilPrediksiQuery $prediksiQuery;
     private IDashboardQuery $dashboardQuery;
     private IDaftarKpmQuery $daftarKpmQuery;
+    private UpdateStatusKpmUseCase $updateStatusKpmUseCase;
 
     public function __construct(
         TambahSurveyUseCase $tambahSurveyUseCase,
         IHasilPrediksiQuery $prediksiQuery,
         IDashboardQuery $dashboardQuery,
-        IDaftarKpmQuery $daftarKpmQuery
+        IDaftarKpmQuery $daftarKpmQuery,
+        UpdateStatusKpmUseCase $updateStatusKpmUseCase
     ) {
         $this->tambahSurveyUseCase = $tambahSurveyUseCase;
         $this->prediksiQuery = $prediksiQuery;
         $this->dashboardQuery = $dashboardQuery;
         $this->daftarKpmQuery = $daftarKpmQuery;
+        $this->updateStatusKpmUseCase = $updateStatusKpmUseCase;
     }
 
     function add_master_bantuan(Request $request)
@@ -218,7 +223,16 @@ class AsesmenController extends Controller
         }
     }
 
-    function updateStatusKpm() {
-        
+    function updateStatusKpm(Request $request)
+    {
+        try {
+            $updateRequest = UpdateKpmRequest::fromArray($request->all());
+            $user = $request->user();
+            $result = $this->updateStatusKpmUseCase->execute($updateRequest->id, $updateRequest->status, $user->id);
+            if ($result) {
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }
