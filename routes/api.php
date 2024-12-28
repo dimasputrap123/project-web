@@ -30,4 +30,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/kpm-sudah-asesmen', [AsesmenController::class, 'daftarKpmSudahAsesmen']);
     Route::post('/kpm-tidak-ditemukan', [AsesmenController::class, 'daftarKpmTidakDitemukan']);
     Route::post('/kpm-meninggal', [AsesmenController::class, 'daftarKpmMeninggal']);
+    Route::post('/update-status-kpm', [AsesmenController::class, 'updateStatusKpm']);
 });

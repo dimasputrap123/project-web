@@ -10,13 +10,13 @@ class KpmRepository implements IKpmRepository
     public function updateStatusById(int $id, int $status, int $user_id, string $now): bool
     {
         try {
-            Kpm::where('id', $id)
+            $result = Kpm::where('id', $id)
                 ->update([
                     'status' => $status,
                     'updated_by' => $user_id,
                     'updated_at' => $now
                 ]);
-            return true;
+            return $result == 1;
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -12,6 +12,7 @@ class KpmAsesmenDTO
 
     public function __construct(int $id, string $nik, string $nama, string $alamat, int $status)
     {
+        $this->id = $id;
         $this->nik = $nik;
         $this->nama = $nama;
         $this->alamat = $alamat;

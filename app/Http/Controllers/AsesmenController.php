@@ -229,10 +229,12 @@ class AsesmenController extends Controller
             $updateRequest = UpdateKpmRequest::fromArray($request->all());
             $user = $request->user();
             $result = $this->updateStatusKpmUseCase->execute($updateRequest->id, $updateRequest->status, $user->id);
-            if ($result) {
+            if (!$result) {
+                return response()->json(['status' => false, 'message' => 'kpm tidak ditemukan']);
             }
+            return response()->json(['status' => true, 'message' => 'success']);
         } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json(['status' => false, 'message' => $th->getMessage()]);
         }
     }
 }
