@@ -32,11 +32,17 @@ class SurveyRepository implements ISurveyRepository
         }
     }
 
-
+    /**
+     * @var Survey[]
+     */
     public function save(array $surveys)
     {
         try {
-            ModelsSurvey::insert($surveys);
+            $arrData = [];
+            foreach ($surveys as $item) {
+                $arrData[] = $item->toArray();
+            }
+            ModelsSurvey::insert($arrData);
         } catch (\Throwable $th) {
             throw $th;
         }

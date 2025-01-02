@@ -16,4 +16,14 @@ class Survey
         $this->id_asesmen = $id_asesmen;
         $this->text_jawaban = $text_jawaban;
     }
+
+    function toArray(): array
+    {
+        return [
+            'id_survey' => $this->id_survey,
+            'id_kpm' => $this->id_kpm,
+            'id_asesmen' => $this->id_asesmen,
+            'text_jawaban' => $this->text_jawaban,
+        ];
+    }
 }
