@@ -35,8 +35,8 @@ def predict_asesmen_rekomendasi(input_data):
         encoders = pickle.load(file)
     
     return {
-        'kategori_asesmen': encoders['kategori_asesmen'].inverse_transform([pred_kategori_asesmen])[0],
-        'rekomendasi_bantuan': encoders['rekomendasi_bantuan'].inverse_transform([pred_rekomendasi_bantuan])[0]
+        'kategori_asesmen': {'text':encoders['kategori_asesmen'].inverse_transform([pred_kategori_asesmen])[0],'id':int(pred_kategori_asesmen)},
+        'rekomendasi_bantuan': {'text':encoders['rekomendasi_bantuan'].inverse_transform([pred_rekomendasi_bantuan])[0],'id':int(pred_rekomendasi_bantuan)}
     }
 
 # user_input = {

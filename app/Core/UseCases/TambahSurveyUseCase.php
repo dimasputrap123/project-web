@@ -28,7 +28,18 @@ class TambahSurveyUseCase
         $now = date('Y-m-d');
         try {
             DB::beginTransaction();
-            $hasil_survey = new HasilSurvey(0, $request->kategori_pred, $request->kategori_man, $request->rekomendasi_pred, $request->rekomendasi_man, $request->catatan, $now, $now);
+            $hasil_survey = new HasilSurvey(
+                0,
+                $request->kategori_pred,
+                $request->kategori_man,
+                $request->rekomendasi_pred,
+                $request->rekomendasi_man,
+                $request->catatan,
+                $now,
+                $now,
+                $id_user,
+                $id_user
+            );
             $id_hasil = $this->hasilSurveyRepository->save($hasil_survey);
             $surveys = json_decode($request->surveys);
             $survey_array = [];

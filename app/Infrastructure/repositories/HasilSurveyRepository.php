@@ -16,7 +16,18 @@ class HasilSurveyRepository implements IHasilSurveyRepository
             if ($result == null) {
                 return null;
             }
-            return new HasilSurvey($result->id, $result->kategori_pred, $result->kategori_man, $result->rekomendasi_pred, $result->rekomendasi_man, $result->catatan, $result->created_at, $result->updated_at);
+            return new HasilSurvey(
+                $result->id,
+                $result->kategori_pred,
+                $result->kategori_man,
+                $result->rekomendasi_pred,
+                $result->rekomendasi_man,
+                $result->catatan,
+                $result->created_at,
+                $result->updated_at,
+                $result->created_by,
+                $result->updated_by
+            );
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -6,6 +6,7 @@ use App\Core\DTO\PertanyaanItemDTO;
 use App\Core\DTO\PertanyaanSlugDTO;
 use App\Core\DTO\PrediksiDTO;
 use App\Core\Interfaces\IHasilPrediksiQuery;
+use App\Core\ValueObject\Label;
 use App\Http\Request\PrediksiRequest;
 use App\Infrastructure\Models\MasterAsesmen;
 use Exception;
@@ -27,7 +28,7 @@ class HasilPrediksiQuery implements IHasilPrediksiQuery
         $outputMain = shell_exec($commandMain);
         $prediksi = json_decode($outputMain);
 
-        return new PrediksiDTO($prediksi->rekomendasi, $prediksi->kategori);
+        return new PrediksiDTO(new Label($prediksi->rekomendasi->id, $prediksi->rekomendasi->text), new Label($prediksi->kategori->id, $prediksi->kategori->text));
     }
 
     public function getPertanyaanSlug(PrediksiRequest $request): PertanyaanSlugDTO
